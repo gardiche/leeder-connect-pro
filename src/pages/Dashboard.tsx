@@ -27,7 +27,7 @@ const Dashboard = () => {
   const checkUser = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      
+
       if (!session) {
         navigate("/auth");
         return;
@@ -40,6 +40,20 @@ const Dashboard = () => {
         .single();
 
       if (error) throw error;
+
+      // Check if freelancer profile is completed
+      if (profile.role === "freelancer") {
+        const { data: freelancerProfile } = await supabase
+          .from("freelancer_profiles")
+          .select("profile_completed")
+          .eq("id", session.user.id)
+          .single();
+
+        if (!freelancerProfile?.profile_completed) {
+          navigate("/onboarding");
+          return;
+        }
+      }
 
       setUserRole(profile.role);
     } catch (error: any) {

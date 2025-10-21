@@ -105,6 +105,8 @@ export type Database = {
       }
       freelancer_profiles: {
         Row: {
+          address: string | null
+          birth_date: string | null
           distance_limit: number | null
           experience: string | null
           hourly_rate: number | null
@@ -112,13 +114,19 @@ export type Database = {
           id_document_url: string | null
           is_available: boolean | null
           location: string | null
+          max_travel_time: number | null
           missions_completed: number | null
+          nationality: string | null
+          phone: string | null
+          profile_completed: boolean | null
           rating_average: number | null
           rib_info: string | null
           siret: string | null
           skills: string[] | null
         }
         Insert: {
+          address?: string | null
+          birth_date?: string | null
           distance_limit?: number | null
           experience?: string | null
           hourly_rate?: number | null
@@ -126,13 +134,19 @@ export type Database = {
           id_document_url?: string | null
           is_available?: boolean | null
           location?: string | null
+          max_travel_time?: number | null
           missions_completed?: number | null
+          nationality?: string | null
+          phone?: string | null
+          profile_completed?: boolean | null
           rating_average?: number | null
           rib_info?: string | null
           siret?: string | null
           skills?: string[] | null
         }
         Update: {
+          address?: string | null
+          birth_date?: string | null
           distance_limit?: number | null
           experience?: string | null
           hourly_rate?: number | null
@@ -140,7 +154,11 @@ export type Database = {
           id_document_url?: string | null
           is_available?: boolean | null
           location?: string | null
+          max_travel_time?: number | null
           missions_completed?: number | null
+          nationality?: string | null
+          phone?: string | null
+          profile_completed?: boolean | null
           rating_average?: number | null
           rib_info?: string | null
           siret?: string | null
