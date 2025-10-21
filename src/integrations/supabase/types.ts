@@ -61,37 +61,52 @@ export type Database = {
       }
       company_profiles: {
         Row: {
+          activity: string | null
           address: string | null
           company_name: string
           contact_name: string
           id: string
           kbis_document_url: string | null
+          location: string | null
+          mission_types: string[] | null
+          profile_completed: boolean | null
           rating_average: number | null
           rib_info: string | null
           sector: string | null
           siret: string | null
+          special_requirements: string | null
         }
         Insert: {
+          activity?: string | null
           address?: string | null
           company_name: string
           contact_name: string
           id: string
           kbis_document_url?: string | null
+          location?: string | null
+          mission_types?: string[] | null
+          profile_completed?: boolean | null
           rating_average?: number | null
           rib_info?: string | null
           sector?: string | null
           siret?: string | null
+          special_requirements?: string | null
         }
         Update: {
+          activity?: string | null
           address?: string | null
           company_name?: string
           contact_name?: string
           id?: string
           kbis_document_url?: string | null
+          location?: string | null
+          mission_types?: string[] | null
+          profile_completed?: boolean | null
           rating_average?: number | null
           rib_info?: string | null
           sector?: string | null
           siret?: string | null
+          special_requirements?: string | null
         }
         Relationships: [
           {

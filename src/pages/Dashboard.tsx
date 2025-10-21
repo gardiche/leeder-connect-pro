@@ -55,6 +55,20 @@ const Dashboard = () => {
         }
       }
 
+      // Check if company profile is completed
+      if (profile.role === "company") {
+        const { data: companyProfile } = await supabase
+          .from("company_profiles")
+          .select("profile_completed")
+          .eq("id", session.user.id)
+          .single();
+
+        if (!companyProfile?.profile_completed) {
+          navigate("/company-onboarding");
+          return;
+        }
+      }
+
       setUserRole(profile.role);
     } catch (error: any) {
       toast.error("Erreur lors du chargement du profil");
