@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, MapPin, Clock, Euro } from "lucide-react";
 import { toast } from "sonner";
+import ApplyMissionDialog from "./ApplyMissionDialog";
 
 interface Mission {
   id: string;
@@ -15,11 +16,14 @@ interface Mission {
   duration: string;
   skills_required: string[];
   created_at: string;
+  company_id: string;
 }
 
 const FreelancerDashboard = () => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchMissions();
@@ -43,7 +47,19 @@ const FreelancerDashboard = () => {
     }
   };
 
-  const handleApply = async (missionId: string) => {
+  const handleOpenDialog = (mission: Mission) => {
+    setSelectedMission(mission);
+    setDialogOpen(true);
+  };
+
+  const handleApply = async (data: {
+    message: string;
+    availability: string;
+    availability_date?: Date;
+    proposed_rate?: number;
+  }) => {
+    if (!selectedMission) return;
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -51,9 +67,9 @@ const FreelancerDashboard = () => {
       const { error } = await supabase
         .from("applications")
         .insert({
-          mission_id: missionId,
+          mission_id: selectedMission.id,
           freelancer_id: user.id,
-          message: "Je suis intéressé par cette mission",
+          message: data.message || `Disponibilité : ${data.availability}\nTarif souhaité : ${data.proposed_rate}€/h`,
         });
 
       if (error) throw error;
@@ -65,6 +81,7 @@ const FreelancerDashboard = () => {
         toast.error("Erreur lors de la candidature");
       }
       console.error(error);
+      throw error;
     }
   };
 
@@ -99,7 +116,7 @@ const FreelancerDashboard = () => {
                       {mission.location}
                     </CardDescription>
                   </div>
-                  <Button onClick={() => handleApply(mission.id)}>
+                  <Button onClick={() => handleOpenDialog(mission)}>
                     Postuler
                   </Button>
                 </div>
@@ -131,6 +148,20 @@ const FreelancerDashboard = () => {
             </Card>
           ))}
         </div>
+      )}
+
+      {selectedMission && (
+        <ApplyMissionDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          mission={{
+            id: selectedMission.id,
+            title: selectedMission.title,
+            hourly_rate: selectedMission.hourly_rate,
+            company_name: "l'entreprise", // TODO: récupérer le nom de l'entreprise
+          }}
+          onSubmit={handleApply}
+        />
       )}
     </div>
   );
