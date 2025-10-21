@@ -99,7 +99,7 @@ const Dashboard = () => {
       {/* Header */}
       <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur-sm z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary">LEEDER</div>
+          <img src="/logo.png" alt="LEEDER" className="h-10" />
           <Button variant="ghost" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
             Déconnexion
