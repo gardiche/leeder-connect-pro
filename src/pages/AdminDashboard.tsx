@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FreelancerDashboard from "@/components/dashboard/FreelancerDashboard";
 import CompanyDashboard from "@/components/dashboard/CompanyDashboard";
+import AdminManagement from "@/components/admin/AdminManagement";
 import { Users, Building2, BarChart3, Settings } from "lucide-react";
 
 const AdminDashboard = () => {
-  const [activeView, setActiveView] = useState<"freelancer" | "company" | "stats">("stats");
+  const [activeView, setActiveView] = useState<"freelancer" | "company" | "stats" | "manage">("stats");
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -18,10 +19,14 @@ const AdminDashboard = () => {
       </div>
 
       <Tabs value={activeView} onValueChange={(value) => setActiveView(value as any)} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="stats" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             Statistiques
+          </TabsTrigger>
+          <TabsTrigger value="manage" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            Gestion
           </TabsTrigger>
           <TabsTrigger value="freelancer" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
@@ -134,6 +139,20 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <CompanyDashboard />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="manage">
+          <Card>
+            <CardHeader>
+              <CardTitle>Gestion complète</CardTitle>
+              <CardDescription>
+                Modifier, supprimer et gérer tous les contenus de la plateforme
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AdminManagement />
             </CardContent>
           </Card>
         </TabsContent>
