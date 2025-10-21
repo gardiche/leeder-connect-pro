@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import FreelancerDashboard from "@/components/dashboard/FreelancerDashboard";
 import CompanyDashboard from "@/components/dashboard/CompanyDashboard";
+import AdminDashboard from "./AdminDashboard";
 import { LogOut } from "lucide-react";
 
 const Dashboard = () => {
@@ -41,31 +42,34 @@ const Dashboard = () => {
 
       if (error) throw error;
 
-      // Check if freelancer profile is completed
-      if (profile.role === "freelancer") {
-        const { data: freelancerProfile } = await supabase
-          .from("freelancer_profiles")
-          .select("profile_completed")
-          .eq("id", session.user.id)
-          .single();
+      // Admins skip onboarding
+      if (profile.role !== "admin") {
+        // Check if freelancer profile is completed
+        if (profile.role === "freelancer") {
+          const { data: freelancerProfile } = await supabase
+            .from("freelancer_profiles")
+            .select("profile_completed")
+            .eq("id", session.user.id)
+            .single();
 
-        if (!freelancerProfile?.profile_completed) {
-          navigate("/onboarding");
-          return;
+          if (!freelancerProfile?.profile_completed) {
+            navigate("/onboarding");
+            return;
+          }
         }
-      }
 
-      // Check if company profile is completed
-      if (profile.role === "company") {
-        const { data: companyProfile } = await supabase
-          .from("company_profiles")
-          .select("profile_completed")
-          .eq("id", session.user.id)
-          .single();
+        // Check if company profile is completed
+        if (profile.role === "company") {
+          const { data: companyProfile } = await supabase
+            .from("company_profiles")
+            .select("profile_completed")
+            .eq("id", session.user.id)
+            .single();
 
-        if (!companyProfile?.profile_completed) {
-          navigate("/company-onboarding");
-          return;
+          if (!companyProfile?.profile_completed) {
+            navigate("/company-onboarding");
+            return;
+          }
         }
       }
 
@@ -110,6 +114,7 @@ const Dashboard = () => {
       {/* Dashboard Content */}
       {userRole === "freelancer" && <FreelancerDashboard />}
       {userRole === "company" && <CompanyDashboard />}
+      {userRole === "admin" && <AdminDashboard />}
     </div>
   );
 };

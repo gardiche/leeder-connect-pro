@@ -8,7 +8,7 @@ const Landing = () => {
       {/* Navigation */}
       <nav className="border-b border-border sticky top-0 bg-background/95 backdrop-blur-sm z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <img src="/logo.png" alt="LEEDER" className="h-10" />
+          <img src="/logo.png" alt="LEEDER" className="h-28" />
           <div className="flex items-center gap-4">
             <Link to="/auth">
               <Button variant="ghost">Se connecter</Button>
